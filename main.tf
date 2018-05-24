@@ -68,12 +68,19 @@ resource "aws_cloudfront_distribution" "default" {
     max_ttl = 86400
   }
 
-  price_class = "PriceClass_All"
+  //price_class = "PriceClass_All"
+  price_class = "PriceClass_200"
 
   restrictions {
+    //geo_restriction {
+    //  restriction_type = "none"
+    //  locations = []
+    //}
     geo_restriction {
-      restriction_type = "none"
-      locations = []
+      restriction_type = "whitelist"
+      locations = [
+        "KR"
+      ]
     }
   }
 
