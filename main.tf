@@ -15,6 +15,7 @@ resource "aws_s3_bucket_object" "default" {
   source = "data/index.html"
   key = "index.html"
 
+  content_type = "text/html"
   acl = "public-read"
 }
 
