@@ -1,9 +1,9 @@
-output "s3_website_endpoint" {
-  value = "${aws_s3_bucket.default.website_endpoint}"
+output "domain" {
+  value = "${module.alias.domain}"
 }
 
-output "route53_domain" {
-  value = "${module.alias.domain}"
+output "s3_website_endpoint" {
+  value = "${aws_s3_bucket.default.website_endpoint}"
 }
 
 output "cdn_domain" {
