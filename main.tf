@@ -37,12 +37,13 @@ resource "aws_cloudfront_distribution" "default" {
 
   default_cache_behavior {
     allowed_methods = [
-      "DELETE",
-      "GET",
-      "POST",
-      "PUT",
       "HEAD",
-      "OPTIONS"
+      "DELETE",
+      "POST",
+      "GET",
+      "OPTIONS",
+      "PUT",
+      "PATCH"
     ]
     cached_methods = [
       "GET",
