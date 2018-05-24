@@ -1,3 +1,3 @@
 zone_id = "sample"
-
-domain_name = "demo.sample.com"
+domain_name = "sample"
+certificate_arn = "sample"
