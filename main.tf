@@ -12,6 +12,17 @@ resource "aws_cloudfront_distribution" "default" {
   origin {
     origin_id = "${var.domain_name}"
     domain_name = "${var.domain_name}.s3.amazonaws.com"
+
+    custom_origin_config {
+      http_port = "80"
+      https_port = "443"
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols = [
+        "TLSv1",
+        "TLSv1.1",
+        "TLSv1.2"
+      ]
+    }
   }
 
   # If using route53 aliases for DNS we need to declare it here too, otherwise we'll get 403s.
@@ -62,8 +73,9 @@ resource "aws_cloudfront_distribution" "default" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
     acm_certificate_arn = "${var.certificate_arn}"
+    minimum_protocol_version = "TLSv1"
+    ssl_support_method = "sni-only"
   }
 }
 
