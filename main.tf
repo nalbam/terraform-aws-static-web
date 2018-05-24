@@ -54,7 +54,7 @@ resource "aws_cloudfront_distribution" "default" {
     target_origin_id = "S3-${var.domain_name}"
 
     forwarded_values {
-      query_string = true
+      query_string = false
       cookies {
         forward = "none"
       }
