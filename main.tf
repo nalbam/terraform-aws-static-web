@@ -1,23 +1,5 @@
-module "domain" {
-  source = "git::https://github.com/nalbam/terraform-aws-route53.git"
-  domain = "${var.domain}"
-}
-
-module "alias" {
-  source = "git::https://github.com/nalbam/terraform-aws-route53-alias.git"
-
-  zone_id = "${var.zone_id}"
-  name = "${var.name}.${var.domain}"
-
-  alias_name = "s3-website-${var.region}.amazonaws.com"
-  alias_zone_id = "${aws_s3_bucket.default.hosted_zone_id}"
-
-  //  alias_name = "${aws_cloudfront_distribution.cdn.domain_name}"
-  //  alias_zone_id = "${aws_cloudfront_distribution.cdn.hosted_zone_id}"
-}
-
 resource "aws_s3_bucket" "default" {
-  bucket = "${var.name}.${var.domain}"
+  bucket = "${var.domain_name}"
   acl = "public-read"
 
   website {
@@ -26,15 +8,28 @@ resource "aws_s3_bucket" "default" {
   }
 }
 
+module "alias" {
+  source = "git::https://github.com/nalbam/terraform-aws-route53-alias.git"
+
+  zone_id = "${var.zone_id}"
+  name = "${var.domain_name}"
+
+  alias_name = "s3-website-${var.region}.amazonaws.com"
+  alias_zone_id = "${aws_s3_bucket.default.hosted_zone_id}"
+
+  //alias_name = "${aws_cloudfront_distribution.cdn.domain_name}"
+  //alias_zone_id = "${aws_cloudfront_distribution.cdn.hosted_zone_id}"
+}
+
 //resource "aws_cloudfront_distribution" "default" {
 //  origin {
-//    origin_id = "${var.name}.${var.domain}"
-//    domain_name = "${var.name}.${var.domain}.s3.amazonaws.com"
+//    origin_id = "${var.domain_name}"
+//    domain_name = "${var.domain_name}.s3.amazonaws.com"
 //  }
 //
 //  # If using route53 aliases for DNS we need to declare it here too, otherwise we'll get 403s.
 //  aliases = [
-//    "${var.name}.${var.domain}"
+//    "${var.domain_name}"
 //  ]
 //
 //  enabled = true
@@ -50,7 +45,7 @@ resource "aws_s3_bucket" "default" {
 //      "GET",
 //      "HEAD"
 //    ]
-//    target_origin_id = "${var.name}.${var.domain}"
+//    target_origin_id = "${var.domain_name}"
 //
 //    forwarded_values {
 //      query_string = true

@@ -1,8 +1,3 @@
 zone_id = "sample"
 
-name = "sample"
-type = "CNAME"
-
-records = [
-  "demo.sample.com"
-]
+domain_name = "demo.sample.com"
