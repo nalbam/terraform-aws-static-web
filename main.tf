@@ -2,6 +2,8 @@ resource "aws_s3_bucket" "default" {
   bucket = "${var.domain_name}"
   acl = "public-read"
 
+  force_destroy = true
+
   website {
     index_document = "index.html"
     error_document = "error.html"
