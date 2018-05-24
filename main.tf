@@ -21,27 +21,20 @@ resource "aws_s3_bucket_object" "default" {
 
 resource "aws_cloudfront_distribution" "default" {
   origin {
-    origin_id = "${var.domain_name}"
+    origin_id = "S3-${var.domain_name}"
     domain_name = "${var.domain_name}.s3.amazonaws.com"
 
-    custom_origin_config {
-      http_port = "80"
-      https_port = "443"
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols = [
-        "TLSv1",
-        "TLSv1.1",
-        "TLSv1.2"
-      ]
+    s3_origin_config {
+      origin_access_identity = ""
     }
   }
 
-  # If using route53 aliases for DNS we need to declare it here too, otherwise we'll get 403s.
   aliases = [
     "${var.domain_name}"
   ]
 
   enabled = true
+  is_ipv6_enabled = true
   default_root_object = "index.html"
 
   default_cache_behavior {
@@ -58,7 +51,7 @@ resource "aws_cloudfront_distribution" "default" {
       "HEAD",
       "GET",
     ]
-    target_origin_id = "${var.domain_name}"
+    target_origin_id = "S3-${var.domain_name}"
 
     forwarded_values {
       query_string = true
@@ -75,7 +68,6 @@ resource "aws_cloudfront_distribution" "default" {
 
   price_class = "PriceClass_All"
 
-  # This is required to be specified even if it's not used.
   restrictions {
     geo_restriction {
       restriction_type = "none"
