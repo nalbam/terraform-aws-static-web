@@ -43,11 +43,11 @@ resource "aws_cloudfront_distribution" "default" {
       "GET",
       "OPTIONS",
       "PUT",
-      "PATCH"
+      "PATCH",
     ]
     cached_methods = [
+      "HEAD",
       "GET",
-      "HEAD"
     ]
     target_origin_id = "${var.domain_name}"
 
