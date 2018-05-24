@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "default" {
   bucket = "${var.domain_name}"
-  acl = "public-read"
 
+  acl = "public-read"
   force_destroy = true
 
   website {
@@ -14,6 +14,8 @@ resource "aws_s3_bucket_object" "default" {
   bucket = "${aws_s3_bucket.default.bucket}"
   source = "data/index.html"
   key = "index.html"
+
+  acl = "public-read"
 }
 
 resource "aws_cloudfront_distribution" "default" {
