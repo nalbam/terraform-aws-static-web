@@ -8,6 +8,12 @@ resource "aws_s3_bucket" "default" {
   }
 }
 
+resource "aws_s3_bucket_object" "default" {
+  bucket = "${aws_s3_bucket.default.bucket}"
+  source = "data/index.html"
+  key = "index.html"
+}
+
 resource "aws_cloudfront_distribution" "default" {
   origin {
     origin_id = "${var.domain_name}"
