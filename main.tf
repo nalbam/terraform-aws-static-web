@@ -26,7 +26,7 @@ resource "aws_s3_bucket" "default" {
   }
 }
 
-//resource "aws_cloudfront_distribution" "cdn" {
+//resource "aws_cloudfront_distribution" "default" {
 //  origin {
 //    origin_id = "${var.name}.${var.domain}"
 //    domain_name = "${var.name}.${var.domain}.s3.amazonaws.com"
