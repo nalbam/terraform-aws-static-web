@@ -1,5 +1,5 @@
 output "domain" {
-  value = "${module.alias.domain}"
+  value = "${var.domain_name}"
 }
 
 output "s3_website_endpoint" {
