@@ -51,8 +51,7 @@ resource "aws_cloudfront_distribution" "default" {
     max_ttl = 86400
   }
 
-  # The cheapest priceclass
-  price_class = "PriceClass_100"
+  price_class = "PriceClass_All"
 
   # This is required to be specified even if it's not used.
   restrictions {
