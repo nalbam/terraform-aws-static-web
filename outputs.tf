@@ -6,6 +6,6 @@ output "route53_domain" {
   value = "${module.alias.domain}"
 }
 
-//output "cdn_domain" {
-//  value = "${aws_cloudfront_distribution.default.domain_name}"
-//}
+output "cdn_domain" {
+  value = "${aws_cloudfront_distribution.default.domain_name}"
+}

@@ -8,19 +8,6 @@ resource "aws_s3_bucket" "default" {
   }
 }
 
-module "alias" {
-  source = "git::https://github.com/nalbam/terraform-aws-route53-alias.git"
-
-  zone_id = "${var.zone_id}"
-  name = "${var.domain_name}"
-
-  //alias_name = "s3-website.${var.region}.amazonaws.com"
-  //alias_zone_id = "${aws_s3_bucket.default.hosted_zone_id}"
-
-  alias_name = "${aws_cloudfront_distribution.default.domain_name}"
-  alias_zone_id = "${aws_cloudfront_distribution.default.hosted_zone_id}"
-}
-
 resource "aws_cloudfront_distribution" "default" {
   origin {
     origin_id = "${var.domain_name}"
@@ -78,4 +65,17 @@ resource "aws_cloudfront_distribution" "default" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+}
+
+module "alias" {
+  source = "git::https://github.com/nalbam/terraform-aws-route53-alias.git"
+
+  zone_id = "${var.zone_id}"
+  name = "${var.domain_name}"
+
+  //alias_name = "s3-website.${var.region}.amazonaws.com"
+  //alias_zone_id = "${aws_s3_bucket.default.hosted_zone_id}"
+
+  alias_name = "${aws_cloudfront_distribution.default.domain_name}"
+  alias_zone_id = "${aws_cloudfront_distribution.default.hosted_zone_id}"
 }
