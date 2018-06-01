@@ -6,11 +6,11 @@ variable zone_id {
   //default = ""
 }
 
+variable certificate_arn {
+  //default = ""
+}
+
 variable domain_name {
   type = "list"
   //default = []
-}
-
-variable certificate_arn {
-  //default = ""
 }

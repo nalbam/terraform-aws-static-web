@@ -12,7 +12,10 @@ module "demo-static" {
   region = "${var.region}"
 
   zone_id = "${module.domain.zone_id}"
-  domain_name = "demo-static.${var.domain}"
   certificate_arn = "${module.domain.certificate_arn}"
+
+  domain_name = [
+    "demo-static.${var.domain}"
+  ]
 }
 ```
