@@ -7,7 +7,8 @@ variable zone_id {
 }
 
 variable domain_name {
-  //default = ""
+  type = "list"
+  //default = []
 }
 
 variable certificate_arn {

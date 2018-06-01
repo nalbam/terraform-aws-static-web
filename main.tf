@@ -21,8 +21,8 @@ resource "aws_s3_bucket_object" "default" {
 
 resource "aws_cloudfront_distribution" "default" {
   origin {
-    origin_id = "S3-${var.domain_name}"
-    domain_name = "${var.domain_name}.s3.amazonaws.com"
+    origin_id = "S3-${element(var.domain_name, 0)}"
+    domain_name = "${element(var.domain_name, 0)}.s3.amazonaws.com"
 
     s3_origin_config {
       origin_access_identity = ""
@@ -51,7 +51,7 @@ resource "aws_cloudfront_distribution" "default" {
       "HEAD",
       "GET",
     ]
-    target_origin_id = "S3-${var.domain_name}"
+    target_origin_id = "S3-${element(var.domain_name, 0)}"
 
     forwarded_values {
       query_string = false
@@ -92,15 +92,17 @@ resource "aws_cloudfront_distribution" "default" {
   }
 }
 
-module "alias" {
-  source = "git::https://github.com/nalbam/terraform-aws-route53-alias.git"
+resource "aws_route53_record" "default" {
+  count = "${length(var.domain_name)}"
 
   zone_id = "${var.zone_id}"
-  name = "${var.domain_name}"
 
-  //alias_name = "s3-website.${var.region}.amazonaws.com"
-  //alias_zone_id = "${aws_s3_bucket.default.hosted_zone_id}"
+  name = "${element(var.domain_name, count.index)}"
+  type = "A"
 
-  alias_name = "${aws_cloudfront_distribution.default.domain_name}"
-  alias_zone_id = "${aws_cloudfront_distribution.default.hosted_zone_id}"
+  alias {
+    name = "${aws_cloudfront_distribution.default.domain_name}"
+    zone_id = "${aws_cloudfront_distribution.default.hosted_zone_id}"
+    evaluate_target_health = "false"
+  }
 }
