@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "default" {
-  bucket = "${var.domain_name}"
+  bucket = "${element(var.domain_name, 0)}"
 
   acl = "public-read"
   force_destroy = true
