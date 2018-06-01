@@ -1,5 +1,5 @@
 variable region {
-  default = "us-east-1"
+  default = "ap-northeast-2"
 }
 
 variable zone_id {
