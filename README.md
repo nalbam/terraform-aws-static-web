@@ -15,7 +15,8 @@ module "demo-static" {
   certificate_arn = "${module.domain.certificate_arn}"
 
   domain_name = [
-    "demo-static.${var.domain}"
+    "www.${var.domain}",
+    "${var.domain}",
   ]
 }
 ```
