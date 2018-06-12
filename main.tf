@@ -11,9 +11,11 @@ resource "aws_s3_bucket" "default" {
 }
 
 resource "aws_s3_bucket_object" "default" {
+  count = "${var.index_html != "" ? 1 : 0}"
+
   bucket = "${aws_s3_bucket.default.bucket}"
-  source = "data/index.html"
-  key = "index.html"
+  source = "${var.index_html}"
+  key    = "index.html"
 
   content_type = "text/html"
   acl = "public-read"

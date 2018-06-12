@@ -14,3 +14,7 @@ variable domain_name {
   type = "list"
   //default = []
 }
+
+variable index_html {
+  default = ""
+}
