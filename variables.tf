@@ -11,10 +11,14 @@ variable certificate_arn {
 }
 
 variable domain_name {
-  type = "list"
-  //default = []
+  type    = "list"
+  default = []
 }
 
 variable index_html {
   default = ""
+}
+
+variable viewer_protocol_policy {
+  default = "redirect-to-https"
 }

@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "default" {
   bucket = "${element(var.domain_name, 0)}"
 
-  acl = "public-read"
+  acl           = "public-read"
   force_destroy = true
 
   website {
@@ -18,12 +18,12 @@ resource "aws_s3_bucket_object" "default" {
   key    = "index.html"
 
   content_type = "text/html"
-  acl = "public-read"
+  acl          = "public-read"
 }
 
 resource "aws_cloudfront_distribution" "default" {
   origin {
-    origin_id = "S3-${element(var.domain_name, 0)}"
+    origin_id   = "S3-${element(var.domain_name, 0)}"
     domain_name = "${element(var.domain_name, 0)}.s3.amazonaws.com"
 
     s3_origin_config {
@@ -32,11 +32,11 @@ resource "aws_cloudfront_distribution" "default" {
   }
 
   aliases = [
-    "${var.domain_name}"
+    "${var.domain_name}",
   ]
 
-  enabled = true
-  is_ipv6_enabled = true
+  enabled             = true
+  is_ipv6_enabled     = true
   default_root_object = "index.html"
 
   default_cache_behavior {
@@ -49,26 +49,30 @@ resource "aws_cloudfront_distribution" "default" {
       "PUT",
       "PATCH",
     ]
+
     cached_methods = [
       "HEAD",
       "GET",
     ]
+
     target_origin_id = "S3-${element(var.domain_name, 0)}"
 
     forwarded_values {
       query_string = false
+
       cookies {
         forward = "none"
       }
     }
 
     compress = true
-    //viewer_protocol_policy = "allow-all"
-    viewer_protocol_policy = "redirect-to-https"
 
-    min_ttl = 0
+    # viewer_protocol_policy = "allow-all"
+    viewer_protocol_policy = "${var.viewer_protocol_policy}"
+
+    min_ttl     = 0
     default_ttl = 3600
-    max_ttl = 86400
+    max_ttl     = 86400
   }
 
   //price_class = "PriceClass_All"
@@ -77,8 +81,9 @@ resource "aws_cloudfront_distribution" "default" {
   restrictions {
     geo_restriction {
       restriction_type = "none"
-      locations = []
+      locations        = []
     }
+
     //geo_restriction {
     //  restriction_type = "whitelist"
     //  locations = [
@@ -88,9 +93,9 @@ resource "aws_cloudfront_distribution" "default" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = "${var.certificate_arn}"
+    acm_certificate_arn      = "${var.certificate_arn}"
     minimum_protocol_version = "TLSv1"
-    ssl_support_method = "sni-only"
+    ssl_support_method       = "sni-only"
   }
 }
 
@@ -103,8 +108,8 @@ resource "aws_route53_record" "default" {
   type = "A"
 
   alias {
-    name = "${aws_cloudfront_distribution.default.domain_name}"
-    zone_id = "${aws_cloudfront_distribution.default.hosted_zone_id}"
+    name                   = "${aws_cloudfront_distribution.default.domain_name}"
+    zone_id                = "${aws_cloudfront_distribution.default.hosted_zone_id}"
     evaluate_target_health = "false"
   }
 }
