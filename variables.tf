@@ -1,24 +1,24 @@
-variable region {
+variable "region" {
   default = "ap-northeast-2"
 }
 
-variable zone_id {
+variable "zone_id" {
   //default = ""
 }
 
-variable certificate_arn {
+variable "certificate_arn" {
   //default = ""
 }
 
-variable domain_name {
-  type    = "list"
+variable "domain_name" {
+  type    = list(string)
   default = []
 }
 
-variable index_html {
+variable "index_html" {
   default = ""
 }
 
-variable viewer_protocol_policy {
+variable "viewer_protocol_policy" {
   default = "redirect-to-https"
 }

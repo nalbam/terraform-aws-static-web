@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "default" {
-  bucket = "${element(var.domain_name, 0)}"
+  bucket = element(var.domain_name, 0)
 
   acl           = "public-read"
   force_destroy = true
@@ -11,10 +11,10 @@ resource "aws_s3_bucket" "default" {
 }
 
 resource "aws_s3_bucket_object" "default" {
-  count = "${var.index_html != "" ? 1 : 0}"
+  count = var.index_html != "" ? 1 : 0
 
-  bucket = "${aws_s3_bucket.default.bucket}"
-  source = "${var.index_html}"
+  bucket = aws_s3_bucket.default.bucket
+  source = var.index_html
   key    = "index.html"
 
   content_type = "text/html"
@@ -31,9 +31,7 @@ resource "aws_cloudfront_distribution" "default" {
     }
   }
 
-  aliases = [
-    "${var.domain_name}",
-  ]
+  aliases = var.domain_name
 
   enabled             = true
   is_ipv6_enabled     = true
@@ -68,7 +66,7 @@ resource "aws_cloudfront_distribution" "default" {
     compress = true
 
     # viewer_protocol_policy = "allow-all"
-    viewer_protocol_policy = "${var.viewer_protocol_policy}"
+    viewer_protocol_policy = var.viewer_protocol_policy
 
     min_ttl     = 0
     default_ttl = 3600
@@ -83,7 +81,6 @@ resource "aws_cloudfront_distribution" "default" {
       restriction_type = "none"
       locations        = []
     }
-
     //geo_restriction {
     //  restriction_type = "whitelist"
     //  locations = [
@@ -93,23 +90,23 @@ resource "aws_cloudfront_distribution" "default" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = "${var.certificate_arn}"
+    acm_certificate_arn      = var.certificate_arn
     minimum_protocol_version = "TLSv1"
     ssl_support_method       = "sni-only"
   }
 }
 
 resource "aws_route53_record" "default" {
-  count = "${length(var.domain_name)}"
+  count = length(var.domain_name)
 
-  zone_id = "${var.zone_id}"
+  zone_id = var.zone_id
 
-  name = "${element(var.domain_name, count.index)}"
+  name = element(var.domain_name, count.index)
   type = "A"
 
   alias {
-    name                   = "${aws_cloudfront_distribution.default.domain_name}"
-    zone_id                = "${aws_cloudfront_distribution.default.hosted_zone_id}"
+    name                   = aws_cloudfront_distribution.default.domain_name
+    zone_id                = aws_cloudfront_distribution.default.hosted_zone_id
     evaluate_target_health = "false"
   }
 }
