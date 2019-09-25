@@ -1,3 +1,5 @@
+# output
+
 output "domain" {
   value = element(var.domain_name, 0)
 }

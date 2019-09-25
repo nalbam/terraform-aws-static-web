@@ -1,3 +1,5 @@
+# main
+
 resource "aws_s3_bucket" "default" {
   bucket = element(var.domain_name, 0)
 
@@ -21,13 +23,17 @@ resource "aws_s3_bucket_object" "default" {
   acl          = "public-read"
 }
 
+resource "aws_cloudfront_origin_access_identity" "default" {
+  comment = element(var.domain_name, 0)
+}
+
 resource "aws_cloudfront_distribution" "default" {
   origin {
     origin_id   = "S3-${element(var.domain_name, 0)}"
     domain_name = "${element(var.domain_name, 0)}.s3.amazonaws.com"
 
     s3_origin_config {
-      origin_access_identity = ""
+      origin_access_identity = aws_cloudfront_origin_access_identity.default.cloudfront_access_identity_path
     }
   }
 

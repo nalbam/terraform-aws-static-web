@@ -3,12 +3,14 @@
 ## usage
 ```
 module "domain" {
-  source = "git::https://github.com/nalbam/terraform-aws-route53.git"
+  source = "github.com/nalbam/terraform-aws-route53"
+
   domain = "${var.domain}"
 }
 
 module "demo-static" {
-  source = "git::https://github.com/nalbam/terraform-aws-static-web.git"
+  source = "github.com/nalbam/terraform-aws-static-web"
+
   region = "${var.region}"
 
   zone_id = "${module.domain.zone_id}"
