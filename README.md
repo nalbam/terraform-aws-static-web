@@ -1,6 +1,7 @@
 # terraform-aws-static-web
 
 ## usage
+
 ```
 module "domain" {
   source = "github.com/nalbam/terraform-aws-route53"
