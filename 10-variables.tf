@@ -12,6 +12,10 @@ variable "certificate_arn" {
   //default = ""
 }
 
+variable "domain_root" {
+  default = ""
+}
+
 variable "domain_name" {
   type    = list(string)
   default = []

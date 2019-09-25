@@ -1,39 +1,16 @@
-# main
+# cloudfront
 
-resource "aws_s3_bucket" "default" {
-  bucket = element(var.domain_name, 0)
-
-  acl           = "public-read"
-  force_destroy = true
-
-  website {
-    index_document = "index.html"
-    error_document = "error.html"
-  }
-}
-
-resource "aws_s3_bucket_object" "default" {
-  count = var.index_html != "" ? 1 : 0
-
-  bucket = aws_s3_bucket.default.bucket
-  source = var.index_html
-  key    = "index.html"
-
-  content_type = "text/html"
-  acl          = "public-read"
-}
-
-resource "aws_cloudfront_origin_access_identity" "default" {
+resource "aws_cloudfront_origin_access_identity" "this" {
   comment = element(var.domain_name, 0)
 }
 
-resource "aws_cloudfront_distribution" "default" {
+resource "aws_cloudfront_distribution" "this" {
   origin {
     origin_id   = "S3-${element(var.domain_name, 0)}"
     domain_name = "${element(var.domain_name, 0)}.s3.amazonaws.com"
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.default.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.this.cloudfront_access_identity_path
     }
   }
 
@@ -99,20 +76,5 @@ resource "aws_cloudfront_distribution" "default" {
     acm_certificate_arn      = var.certificate_arn
     minimum_protocol_version = "TLSv1"
     ssl_support_method       = "sni-only"
-  }
-}
-
-resource "aws_route53_record" "default" {
-  count = length(var.domain_name)
-
-  zone_id = var.zone_id
-
-  name = element(var.domain_name, count.index)
-  type = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.default.domain_name
-    zone_id                = aws_cloudfront_distribution.default.hosted_zone_id
-    evaluate_target_health = "false"
   }
 }
