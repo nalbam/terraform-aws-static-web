@@ -1,15 +1,9 @@
 # route53
 
-data "aws_route53_zone" "this" {
-  count = var.domain_root != "" ? 1 : 0
-
-  name = var.domain_root
-}
-
 resource "aws_route53_record" "this" {
-  count = var.domain_root != "" ? length(var.domain_name) : 0
+  count = length(var.domain_name)
 
-  zone_id = data.aws_route53_zone.this[0].zone_id
+  zone_id = var.zone_id
 
   name = element(var.domain_name, count.index)
   type = "A"
