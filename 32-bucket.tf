@@ -3,8 +3,9 @@
 resource "aws_s3_bucket" "this" {
   bucket = element(var.domain_name, 0)
 
-  acl           = "public-read"
-  force_destroy = true
+  acl = var.acl
+
+  force_destroy = var.force_destroy
 
   website {
     index_document           = var.website_index

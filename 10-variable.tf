@@ -6,11 +6,19 @@ variable "region" {
 }
 
 variable "zone_id" {
-  //default = ""
+  # default = ""
 }
 
 variable "certificate_arn" {
-  //default = ""
+  # default = ""
+}
+
+variable "acl" {
+  default = "public-read"
+}
+
+variable "force_destroy" {
+  default = false
 }
 
 variable "domain_name" {
