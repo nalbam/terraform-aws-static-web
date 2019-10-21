@@ -18,7 +18,15 @@ variable "domain_name" {
   default = []
 }
 
-variable "index_html" {
+variable "website_index" {
+  default = "index.html"
+}
+
+variable "website_error" {
+  default = "error.html"
+}
+
+variable "website_redirect" {
   default = ""
 }
 
