@@ -8,8 +8,8 @@ resource "aws_s3_bucket" "this" {
   force_destroy = var.force_destroy
 
   website {
-    index_document           = var.website_index
-    error_document           = var.website_error
-    redirect_all_requests_to = var.website_redirect
+    index_document = var.website_index
+    error_document = var.website_error
+    # redirect_all_requests_to = var.website_redirect
   }
 }
