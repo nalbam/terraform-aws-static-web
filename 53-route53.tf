@@ -1,7 +1,7 @@
 # route53
 
 module "domain" {
-  source = "github.com/nalbam/terraform-aws-route53-alias?ref=v0.12.1"
+  source = "github.com/nalbam/terraform-aws-route53-alias?ref=v0.12.2"
 
   zone_id = var.zone_id
 
