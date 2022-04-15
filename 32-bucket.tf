@@ -3,9 +3,13 @@
 resource "aws_s3_bucket" "this" {
   bucket = element(var.domain_name, 0)
 
-  acl = var.acl
-
   force_destroy = var.force_destroy
+}
+
+resource "aws_s3_bucket_acl" "this" {
+  bucket = aws_s3_bucket.this.bucket
+
+  acl = var.acl
 }
 
 resource "aws_s3_bucket_website_configuration" "this" {
