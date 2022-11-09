@@ -13,6 +13,10 @@ variable "certificate_arn" {
   # default = ""
 }
 
+variable "minimum_protocol_version" {
+  default = "TLSv1" # TLSv1 TLSv1.2_2021
+}
+
 variable "acl" {
   default = "public-read"
 }
@@ -24,6 +28,10 @@ variable "force_destroy" {
 variable "domain_name" {
   type    = list(string)
   default = []
+}
+
+variable "price_class" {
+  default = "PriceClass_200" # PriceClass_All
 }
 
 variable "website_index" {

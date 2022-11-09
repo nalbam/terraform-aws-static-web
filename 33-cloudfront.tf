@@ -56,8 +56,7 @@ resource "aws_cloudfront_distribution" "this" {
     max_ttl     = 86400
   }
 
-  //price_class = "PriceClass_All"
-  price_class = "PriceClass_200"
+  price_class = var.price_class
 
   restrictions {
     geo_restriction {
@@ -74,7 +73,7 @@ resource "aws_cloudfront_distribution" "this" {
 
   viewer_certificate {
     acm_certificate_arn      = var.certificate_arn
-    minimum_protocol_version = "TLSv1"
+    minimum_protocol_version = var.minimum_protocol_version
     ssl_support_method       = "sni-only"
   }
 }
