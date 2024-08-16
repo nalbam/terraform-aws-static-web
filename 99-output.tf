@@ -1,7 +1,7 @@
 # output
 
 output "domain" {
-  value = element(var.domain_name, 0)
+  value = local.domain_name
 }
 
 output "cdn_domain" {

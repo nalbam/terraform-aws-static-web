@@ -1,7 +1,7 @@
 # bucket
 
 resource "aws_s3_bucket" "this" {
-  bucket = element(var.domain_name, 0)
+  bucket = local.domain_name
 
   force_destroy = var.force_destroy
 }

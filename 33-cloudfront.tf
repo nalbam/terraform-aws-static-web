@@ -1,13 +1,13 @@
 # cloudfront
 
 resource "aws_cloudfront_origin_access_identity" "this" {
-  comment = element(var.domain_name, 0)
+  comment = local.domain_name
 }
 
 resource "aws_cloudfront_distribution" "this" {
   origin {
-    origin_id   = "S3-${element(var.domain_name, 0)}"
-    domain_name = "${element(var.domain_name, 0)}.s3.amazonaws.com"
+    origin_id   = "S3-${local.domain_name}"
+    domain_name = "${local.domain_name}.s3-website.${var.region}.amazonaws.com"
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.this.cloudfront_access_identity_path
@@ -36,7 +36,7 @@ resource "aws_cloudfront_distribution" "this" {
       "GET",
     ]
 
-    target_origin_id = "S3-${element(var.domain_name, 0)}"
+    target_origin_id = "S3-${local.domain_name}"
 
     forwarded_values {
       query_string = false
