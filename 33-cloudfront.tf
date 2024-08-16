@@ -7,7 +7,9 @@ resource "aws_cloudfront_origin_access_identity" "this" {
 resource "aws_cloudfront_distribution" "this" {
   origin {
     origin_id   = "S3-${local.domain_name}"
-    domain_name = aws_s3_bucket.this.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.this.website_endpoint
+
+    # domain_name = "${local.domain_name}.s3-website.${var.region}.amazonaws.com"
 
     custom_origin_config {
       http_port                = 80
